@@ -50,7 +50,8 @@ def train_nb(data, labels):
     for label in label_feature_cnt:
         label_feature_p[label] = []
         for i in range(len(data[0])):
-            label_feature_p[label].append(label_feature_cnt[label][i] * 1.0 / sum([label_feature_cnt[label][i] for i in label_feature_cnt[label]]))
+            count = sum([label_feature_cnt[label][i] for i in label_feature_cnt[label]])
+            label_feature_p[label].append(label_feature_cnt[label][i] * 1.0 / count)
 
     return label_feature_p, {label: len(labels_idx[label]) * 1.0 / len(labels) for label in labels_idx}
 
@@ -59,9 +60,5 @@ if __name__ == "__main__":
     posts, labels = load_data_set()
     features = get_featurs(posts)
     data = [words2vec(features, post) for post in posts]
-    pfeatur, plabel = train_nb(data, labels)
-
-    for label in plabel:
-        for i in range(len(features)):
-            print label, features[i], pfeatur[label][i]
-    # print features, pfeatur, plabel
+    p_feature, p_label = train_nb(data, labels)
+    print features, p_feature, p_label
